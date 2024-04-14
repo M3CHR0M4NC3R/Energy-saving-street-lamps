@@ -1,0 +1,49 @@
+int trigPin = 9;
+int echoPin = 8;
+float x = 0;
+
+float duration_us, distance_cm;
+
+void setup() {
+  Serial.begin (9600);
+
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+}
+
+void loop() {
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  duration_us = pulseIn(echoPin, HIGH);
+
+  distance_cm = 0.017 * duration_us;
+
+  if ((distance_cm > 0)&&(distance_cm < 4)){
+    if(analogRead(0) < 800){
+      x = 100 - analogRead(0)*0.1;
+      analogWrite(3, x);
+      analogWrite(5, LOW);
+      analogWrite(6, LOW);
+    }
+  } else if((distance_cm >= 4)&&(distance_cm < 8)){
+    if(analogRead(0) < 800){
+      x = 100 - analogRead(0)*0.1;
+      analogWrite(5, x);
+      analogWrite(3, LOW);
+      analogWrite(6, LOW);
+    }
+  } else if((distance_cm >= 8)&&(distance_cm < 12)){
+    if(analogRead(0) < 800){
+      x = 100 - analogRead(0)*0.1;
+      analogWrite(6, x);
+      analogWrite(5, LOW);
+      analogWrite(3, LOW);
+    }
+  } else {
+    analogWrite(6, LOW);
+    analogWrite(5, LOW);
+    analogWrite(3, LOW);
+  }
+}
